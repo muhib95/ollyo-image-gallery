@@ -69,14 +69,19 @@ function App() {
     const oldIndex = draggedIndex; // Get the source index
     reorderArray(oldIndex, newIndex);
   };
-
   const reorderArray = (oldIndex, newIndex) => {
     const updatedArray = [...array1];
-    const movedItem = updatedArray[oldIndex];
-    updatedArray[oldIndex] = updatedArray[newIndex];
-    updatedArray[newIndex] = movedItem;
+    const [movedItem] = updatedArray.splice(oldIndex, 1);
+    updatedArray.splice(newIndex, 0, movedItem);
     setArray1(updatedArray);
   };
+  // const reorderArray = (oldIndex, newIndex) => {
+  //   const updatedArray = [...array1];
+  //   const movedItem = updatedArray[oldIndex];
+  //   updatedArray[oldIndex] = updatedArray[newIndex];
+  //   updatedArray[newIndex] = movedItem;
+  //   setArray1(updatedArray);
+  // };
   return (
     <div>
       {clickedItems.length !== 0 && (
