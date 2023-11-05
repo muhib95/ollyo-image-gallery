@@ -31,6 +31,7 @@ function App() {
   const removeItem = (clickedItems) => {
     const filteredItems = filterItemsByIndexes(array1, clickedItems);
     setArray1(filteredItems);
+    setClickedItems([]);
     console.log(clickedItems);
   };
 
@@ -39,7 +40,43 @@ function App() {
       (item, index) => indexesToExclude.indexOf(index) === -1
     );
   }
-  console.log(clickedItems);
+
+  // const reorderArray = (oldIndex, newIndex) => {
+  //   const updatedArray = [...array1];
+  //   const [movedItem] = updatedArray.splice(oldIndex, 1);
+  //   updatedArray.splice(newIndex, 0, movedItem);
+  //   setArray1(updatedArray);
+  // };
+  console.log(array1);
+  // const changeImage = (i) => {
+  //   console.log(i);
+  // };
+  const [draggedIndex, setDraggedIndex] = useState(null); // Track the source index
+
+  const handleDragStart = (e, index) => {
+    e.dataTransfer.setData("text/plain", index);
+    console.log(index);
+    setDraggedIndex(index);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e, newIndex) => {
+    e.preventDefault();
+    console.log(newIndex);
+    const oldIndex = draggedIndex; // Get the source index
+    reorderArray(oldIndex, newIndex);
+  };
+
+  const reorderArray = (oldIndex, newIndex) => {
+    const updatedArray = [...array1];
+    const movedItem = updatedArray[oldIndex];
+    updatedArray[oldIndex] = updatedArray[newIndex];
+    updatedArray[newIndex] = movedItem;
+    setArray1(updatedArray);
+  };
   return (
     <div>
       {clickedItems.length !== 0 && (
@@ -61,7 +98,10 @@ function App() {
         {array1.map((img, i) => (
           <div
             key={i}
-            // onDragEnter={() => changeImage(i)}
+            onDragStart={(e) => handleDragStart(e, i)}
+            onDragOver={(e) => handleDragOver(e)}
+            onDrop={(e) => handleDrop(e, i)}
+            draggable
             className={`border border-solid border-black ${
               i === 0 ? "row-span-2" : ""
             } ${i === 0 ? "col-span-2" : ""}`}
