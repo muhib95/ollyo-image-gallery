@@ -32,6 +32,7 @@ function App() {
   const removeItem = (clickedItems) => {
     const filteredItems = filterItemsByIndexes(array1, clickedItems);
     setArray1(filteredItems);
+    setClickedItems([]);
   };
 
   function filterItemsByIndexes(items, indexesToExclude) {
@@ -64,6 +65,16 @@ function App() {
     updatedArray.splice(newIndex, 0, movedItem);
     setArray1(updatedArray);
   };
+  const [match, setMatch] = useState(20);
+  // // // // const [m, setM] = useState(false);
+  const hover = (i) => {
+    console.log(i);
+    setMatch(i);
+  };
+  const leave = () => {
+    // console.log(i);
+    setMatch();
+  };
 
   return (
     <div>
@@ -91,6 +102,8 @@ function App() {
       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2 w-[80%] h-1/2 m-0 mx-auto">
         {array1.map((img, i) => (
           <div
+            onMouseEnter={() => hover(i)}
+            onMouseLeave={() => leave()}
             key={i}
             onDragStart={(e) => handleDragStart(e, i)}
             onDragOver={(e) => handleDragOver(e)}
@@ -100,14 +113,30 @@ function App() {
               i === 0 ? "row-span-2" : ""
             } ${i === 0 ? "col-span-2" : ""} relative`}
           >
-            <input
-              className="absolute top-[24px] left-[14px] z-20 w-[20px] h-[20px]"
-              type="checkbox"
-              id="vehicle1"
-              name="vehicle1"
-              value="Bike"
-              onChange={() => deleteItem(i)}
-            ></input>
+            {/*array1.indexOf(array1[i]) === match (array1.indexOf(array1[i]) === clickedItems[i] &&
+                clickedItems.length !== 0) clickedItems.includes(i) */}
+            {array1.indexOf(array1[i]) === match && (
+              <input
+                className="absolute top-[24px] left-[14px] z-20 w-[20px] h-[20px]"
+                type="checkbox"
+                id="vehicle1"
+                name="vehicle1"
+                value="Bike"
+                checked={clickedItems.includes(i)}
+                onChange={() => deleteItem(i)}
+              ></input>
+            )}
+            {clickedItems.includes(i) && (
+              <input
+                className="absolute top-[24px] left-[14px] z-20 w-[20px] h-[20px]"
+                type="checkbox"
+                id="vehicle1"
+                name="vehicle1"
+                value="Bike"
+                checked={clickedItems.includes(i)}
+                onChange={() => deleteItem(i)}
+              ></input>
+            )}
 
             <img src={img} alt="jjj" className="w-full h-auto"></img>
           </div>
@@ -115,7 +144,7 @@ function App() {
         <div className="bg-white  p-3 border-dashed border-2 border-black">
           <div className="bg-white border    p-4  flex justify-center items-center">
             <label
-              for="upload"
+              htmlFor="upload"
               className="flex flex-col items-center gap-2 cursor-pointer"
             >
               <img className="w-11 h-11" src="/images/new.png" alt="pp"></img>
