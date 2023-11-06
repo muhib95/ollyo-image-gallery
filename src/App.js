@@ -70,7 +70,11 @@ function App() {
       {clickedItems.length !== 0 ? (
         <div className="flex justify-evenly h-11 p-2">
           <div>
-            <p>You have Selected {clickedItems.length} items</p>
+            {clickedItems.length > 1 ? (
+              <p>{clickedItems.length} Files Selected</p>
+            ) : (
+              <p>{clickedItems.length} File Selected</p>
+            )}
           </div>
           <div>
             <button
@@ -97,7 +101,7 @@ function App() {
             } ${i === 0 ? "col-span-2" : ""} relative`}
           >
             <input
-              className="absolute top-[24px] left-[14px] z-20"
+              className="absolute top-[24px] left-[14px] z-20 w-[20px] h-[20px]"
               type="checkbox"
               id="vehicle1"
               name="vehicle1"
