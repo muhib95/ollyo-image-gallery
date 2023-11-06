@@ -82,9 +82,13 @@ function App() {
         <div className="flex justify-evenly h-11 p-2">
           <div>
             {clickedItems.length > 1 ? (
-              <p>{clickedItems.length} Files Selected</p>
+              <p>
+                <span>☑️</span> {clickedItems.length} Files Selected
+              </p>
             ) : (
-              <p>{clickedItems.length} File Selected</p>
+              <p>
+                <span>☑️</span> {clickedItems.length} File Selected
+              </p>
             )}
           </div>
           <div>
@@ -111,13 +115,15 @@ function App() {
             draggable
             className={`border border-solid border-black ${
               i === 0 ? "row-span-2" : ""
-            } ${i === 0 ? "col-span-2" : ""} relative`}
+            } ${i === 0 ? "col-span-2" : ""} relative   ${
+              clickedItems.includes(i) && "opacity-30"
+            }`}
           >
             {/*array1.indexOf(array1[i]) === match (array1.indexOf(array1[i]) === clickedItems[i] &&
                 clickedItems.length !== 0) clickedItems.includes(i) */}
             {array1.indexOf(array1[i]) === match && (
               <input
-                className="absolute top-[24px] left-[14px] z-20 w-[20px] h-[20px]"
+                className="absolute top-[24px] left-[14px] z-20 w-[20px] h-[20px] opacity-100"
                 type="checkbox"
                 id="vehicle1"
                 name="vehicle1"
