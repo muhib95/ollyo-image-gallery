@@ -21,18 +21,17 @@ function App() {
     if (clickedItems.includes(img)) {
       // Item is already in the array, so remove it
       const updatedItems = clickedItems.filter((item) => item !== img);
+
       setClickedItems(updatedItems);
     } else {
       setClickedItems([...clickedItems, img]);
     }
   };
-
+  console.log(clickedItems);
   const [array1, setArray1] = useState(images);
   const removeItem = (clickedItems) => {
     const filteredItems = filterItemsByIndexes(array1, clickedItems);
     setArray1(filteredItems);
-    setClickedItems([]);
-    console.log(clickedItems);
   };
 
   function filterItemsByIndexes(items, indexesToExclude) {
@@ -41,16 +40,6 @@ function App() {
     );
   }
 
-  // const reorderArray = (oldIndex, newIndex) => {
-  //   const updatedArray = [...array1];
-  //   const [movedItem] = updatedArray.splice(oldIndex, 1);
-  //   updatedArray.splice(newIndex, 0, movedItem);
-  //   setArray1(updatedArray);
-  // };
-  console.log(array1);
-  // const changeImage = (i) => {
-  //   console.log(i);
-  // };
   const [draggedIndex, setDraggedIndex] = useState(null); // Track the source index
 
   const handleDragStart = (e, index) => {
@@ -75,17 +64,11 @@ function App() {
     updatedArray.splice(newIndex, 0, movedItem);
     setArray1(updatedArray);
   };
-  // const reorderArray = (oldIndex, newIndex) => {
-  //   const updatedArray = [...array1];
-  //   const movedItem = updatedArray[oldIndex];
-  //   updatedArray[oldIndex] = updatedArray[newIndex];
-  //   updatedArray[newIndex] = movedItem;
-  //   setArray1(updatedArray);
-  // };
+
   return (
     <div>
-      {clickedItems.length !== 0 && (
-        <div className="flex justify-evenly">
+      {clickedItems.length !== 0 ? (
+        <div className="flex justify-evenly h-11 p-2">
           <div>
             <p>You have Selected {clickedItems.length} items</p>
           </div>
@@ -98,8 +81,10 @@ function App() {
             </button>
           </div>
         </div>
+      ) : (
+        <div className="flex justify-evenly h-11"></div>
       )}
-      <div className="grid grid-cols-5 gap-2 w-[80%] h-1/2">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2 w-[80%] h-1/2 m-0 mx-auto">
         {array1.map((img, i) => (
           <div
             key={i}
@@ -109,18 +94,33 @@ function App() {
             draggable
             className={`border border-solid border-black ${
               i === 0 ? "row-span-2" : ""
-            } ${i === 0 ? "col-span-2" : ""}`}
+            } ${i === 0 ? "col-span-2" : ""} relative`}
           >
             <input
-              onClick={() => deleteItem(i)}
+              className="absolute top-[24px] left-[14px] z-20"
               type="checkbox"
               id="vehicle1"
               name="vehicle1"
               value="Bike"
+              onChange={() => deleteItem(i)}
             ></input>
-            <img src={img} alt="jjj"></img>
+
+            <img src={img} alt="jjj" className="w-full h-auto"></img>
           </div>
         ))}
+        <div className="bg-white  p-3 border-dashed border-2 border-black">
+          <div className="bg-white border    p-4  flex justify-center items-center">
+            <label
+              for="upload"
+              className="flex flex-col items-center gap-2 cursor-pointer"
+            >
+              <img className="w-11 h-11" src="/images/new.png" alt="pp"></img>
+
+              <span className="text-black font-medium mt-3">Add Images</span>
+            </label>
+            <input id="upload" type="file" className="hidden" />
+          </div>
+        </div>
       </div>
     </div>
   );
